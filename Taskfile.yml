@@ -1,0 +1,80 @@
+version: "3"
+
+tasks:
+  default:
+    desc: "Show available tasks"
+    cmd: task --list
+
+  install:
+    desc: "Install all workspace dependencies"
+    cmd: pnpm install
+    sources:
+      - package.json
+      - frontend/package.json
+      - server/package.json
+      - pnpm-workspace.yaml
+    generates:
+      - node_modules/**/*
+      - pnpm-lock.yaml
+
+  dev:
+    desc: "Install dependencies and start development servers"
+    deps:
+      - install
+    cmd: pnpm --parallel --filter frontend --filter server dev
+
+  dev:frontend:
+    desc: "Start only the frontend development server"
+    deps:
+      - install
+    cmd: pnpm --filter frontend dev
+
+  dev:server:
+    desc: "Start only the server development server"
+    deps:
+      - install
+    cmd: pnpm --filter server dev
+
+  build:
+    desc: "Build all projects"
+    deps:
+      - install
+    cmd: pnpm --filter frontend build && pnpm --filter server build
+
+  build:frontend:
+    desc: "Build frontend only"
+    deps:
+      - install
+    cmd: pnpm --filter frontend build
+
+  build:server:
+    desc: "Build server only"
+    deps:
+      - install
+    cmd: pnpm --filter server build
+
+  clean:
+    desc: "Clean all build artifacts and dependencies"
+    cmd: |
+      rm -rf node_modules
+      rm -rf frontend/node_modules
+      rm -rf server/node_modules
+      rm -rf frontend/dist
+      rm -rf server/dist
+      rm -f pnpm-lock.yaml
+
+  lint:
+    desc: "Run linting on all projects"
+    deps:
+      - install
+    cmd: |
+      pnpm --filter frontend lint || true
+      pnpm --filter server lint || true
+
+  test:
+    desc: "Run tests on all projects"
+    deps:
+      - install
+    cmd: |
+      pnpm --filter frontend test || true
+      pnpm --filter server test || true

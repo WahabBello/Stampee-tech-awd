@@ -1,0 +1,16 @@
+{
+  "name": "stampee-tech-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel --filter frontend --filter server dev",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:server": "pnpm --filter server dev",
+    "build": "pnpm --filter frontend build && pnpm --filter server build",
+    "build:frontend": "pnpm --filter frontend build",
+    "build:server": "pnpm --filter server build",
+    "install:all": "pnpm install"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
