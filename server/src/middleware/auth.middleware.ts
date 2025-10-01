@@ -1,10 +1,10 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { verifyToken, extractTokenFromHeader } from '../utils/jwt';
 
-/**
- * Middleware pour protéger les routes
- * Vérifie la présence et la validité du token JWT
- */
+
+// Middleware pour protéger les routes
+// Vérifie la présence et la validité du token JWT
+
 export async function authMiddleware(
   request: FastifyRequest,
   reply: FastifyReply

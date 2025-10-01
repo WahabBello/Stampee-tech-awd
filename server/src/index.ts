@@ -4,6 +4,7 @@ import cors from '@fastify/cors';
 import * as dotenv from 'dotenv';
 import { testConnection } from './db/db';
 import { authRoutes } from './routes/auth.routes';
+import { contactRoutes } from './routes/contact.routes';
 
 dotenv.config();
 
@@ -19,6 +20,10 @@ fastify.register(cors, {
 
 // Enregistrer les routes d'authentification
 fastify.register(authRoutes, { prefix: '/api/auth' });
+
+// Enregistrer les routes de contacts
+fastify.register(contactRoutes, { prefix: '/api/contacts' });
+
 
 // Route de test
 fastify.get('/api/test', async (request, reply) => {
