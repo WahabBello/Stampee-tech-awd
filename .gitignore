@@ -2,3 +2,4 @@
 **/dist
 ./task
 .task
+./env

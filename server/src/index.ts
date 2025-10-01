@@ -1,22 +1,45 @@
-import Fastify from "fastify";
+// backend/src/index.ts
+import Fastify from 'fastify';
+import cors from '@fastify/cors';
+import * as dotenv from 'dotenv';
+import { testConnection } from './db/db';
+import { authRoutes } from './routes/auth.routes';
+
+dotenv.config();
 
 const fastify = Fastify({
   logger: true,
 });
 
+// CORS configuration
+fastify.register(cors, {
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true,
+});
+
+// Enregistrer les routes d'authentification
+fastify.register(authRoutes, { prefix: '/api/auth' });
+
+// Route de test
+fastify.get('/api/test', async (request, reply) => {
+  return { status: 'ok', message: 'Server is running' };
+});
+
+// Démarrer le serveur
 const start = async () => {
   try {
-    fastify.get("/api/health", async (request, reply) => {
-      return {
-        message: "Fastify server is running!",
-        timestamp: new Date().toISOString(),
-      };
-    });
+    // Connexion BDD
+    const dbConnected = await testConnection();
+    
+    if (!dbConnected) {
+      throw new Error('Database connection failed');
+    }
 
-    const PORT = Number(process.env.PORT) || 3000;
-    await fastify.listen({ port: PORT, host: "0.0.0.0" });
-
-    console.log(`🚀 Fastify server running on http://localhost:${PORT}`);
+    const PORT = parseInt(process.env.PORT || '3000', 10);
+    
+    await fastify.listen({ port: PORT, host: '0.0.0.0' });
+    
+    console.log(`🚀 Server listening on http://localhost:${PORT}`);
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
