@@ -5,7 +5,7 @@ export const individualContactSchema = z.object({
   type: z.literal('individual'),
   firstName: z.string().min(1, 'Le prénom est requis').max(100),
   lastName: z.string().min(1, 'Le nom est requis').max(100),
-  email: z.string().email('Email invalide'),
+  email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Email invalide"),
 });
 
 // Validation pour les contacts de type "Professional"
@@ -16,7 +16,7 @@ export const professionalContactSchema = z.object({
     .string()
     .length(9, 'Le numéro SIREN doit contenir exactement 9 chiffres')
     .regex(/^\d{9}$/, 'Le numéro SIREN ne doit contenir que des chiffres'),
-  email: z.string().email('Email invalide'),
+  email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Email invalide"),
 });
 
 // Union des deux types

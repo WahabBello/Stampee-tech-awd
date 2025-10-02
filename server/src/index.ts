@@ -1,4 +1,3 @@
-// backend/src/index.ts
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import * as dotenv from 'dotenv';
