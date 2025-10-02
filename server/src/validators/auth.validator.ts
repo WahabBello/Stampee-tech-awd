@@ -4,8 +4,8 @@ import { z } from 'zod';
 export const registerSchema = z.object({
   email: z
     .string()
-    .email('Email invalide')
-    .min(1, 'Email requis'),
+    .min(1, 'Email requis')
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Email invalide"),
   password: z
     .string()
     .min(6, 'Le mot de passe doit contenir au moins 6 caractères')
@@ -16,8 +16,8 @@ export const registerSchema = z.object({
 export const loginSchema = z.object({
   email: z
     .string()
-    .email('Email invalide')
-    .min(1, 'Email requis'),
+    .min(1, 'Email requis')
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Email invalide"),
   password: z
     .string()
     .min(1, 'Mot de passe requis'),
