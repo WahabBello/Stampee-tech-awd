@@ -65,6 +65,39 @@ export interface RegisterCredentials {
   password: string;
 }
 
+// Contact Types
+export interface IndividualContact {
+  id?: number;
+  type: 'individual';
+  firstName: string;
+  lastName: string;
+  email: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ProfessionalContact {
+  id?: number;
+  type: 'professional';
+  companyName: string;
+  sirenNumber: string;
+  email: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type Contact = IndividualContact | ProfessionalContact;
+
+export interface ContactsResponse {
+  contacts: Contact[];
+  count: number;
+}
+
+export interface CreateContactResponse {
+  message: string;
+  contact: Contact;
+}
+
 // API Auth
 export const authAPI = {
   register: (credentials: RegisterCredentials) =>
@@ -78,4 +111,22 @@ export const authAPI = {
 
   me: () =>
     api.get<{ user: User }>('/auth/me'),
+};
+
+// API Contacts
+export const contactsAPI = {
+  getAll: (search?: string) =>
+    api.get<ContactsResponse>('/contacts', { params: { search } }),
+
+  getById: (id: number) =>
+    api.get<{ contact: Contact }>(`/contacts/${id}`),
+
+  create: (contact: Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>) =>
+    api.post<CreateContactResponse>('/contacts', contact),
+
+  update: (id: number, contact: Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>) =>
+    api.put<{ message: string; contact: Contact }>(`/contacts/${id}`, contact),
+
+  delete: (id: number) =>
+    api.delete<{ message: string }>(`/contacts/${id}`),
 };
