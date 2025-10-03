@@ -1,4 +1,3 @@
-// frontend/src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '../stores/auth.store';
 import LoginView from '../views/LoginView.vue';
