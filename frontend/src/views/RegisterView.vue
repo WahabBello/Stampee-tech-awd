@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth.store';
 
@@ -9,6 +9,7 @@ const authStore = useAuthStore();
 const email = ref('');
 const password = ref('');
 const confirmPassword = ref('');
+const confirmPasswordKey = ref(0); 
 
 const emailRules = [
   (v: string) => !!v || 'Email requis',
@@ -26,6 +27,13 @@ const confirmPasswordRules = [
 ];
 
 const formValid = ref(false);
+
+// Watcher pour re-valider confirmPassword quand password change
+watch(password, () => {
+  if (confirmPassword.value) {
+    confirmPasswordKey.value++;
+  }
+});
 
 const handleSubmit = async () => {
   if (!formValid.value) return;
@@ -88,6 +96,7 @@ const handleSubmit = async () => {
 
                   <!-- Confirm Password -->
                   <v-text-field
+                    :key="confirmPasswordKey"
                     v-model="confirmPassword"
                     label="Confirmer le mot de passe"
                     type="password"
