@@ -1,7 +1,11 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-const JWT_EXPIRES_IN = '1d';
+const JWT_SECRET = process.env.JWT_SECRET as string;
+const JWT_EXPIRES_IN = '5h';
+
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET doit être défini dans le fichier .env");
+}
 
 export interface JwtPayload {
   userId: number;
