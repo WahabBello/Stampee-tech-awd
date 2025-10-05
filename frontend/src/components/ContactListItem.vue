@@ -10,7 +10,7 @@ interface Emits {
   (e: 'delete', id: number): void;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const getContactName = (contact: Contact) => {

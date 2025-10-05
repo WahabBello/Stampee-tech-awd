@@ -19,14 +19,14 @@ export const useContactStore = defineStore('contact', () => {
     return contacts.value.filter((contact) => {
       if (contact.type === 'individual') {
         return (
-          contact.firstName.toLowerCase().includes(query) ||
-          contact.lastName.toLowerCase().includes(query) ||
-          contact.email.toLowerCase().includes(query)
+          contact.firstName?.toLowerCase().includes(query) ||
+          contact.lastName?.toLowerCase().includes(query) ||
+          contact.email?.toLowerCase().includes(query)
         );
       } else {
         return (
-          contact.companyName.toLowerCase().includes(query) ||
-          contact.sirenNumber.includes(query) ||
+          contact.companyName?.toLowerCase().includes(query) ||
+          contact.sirenNumber?.includes(query) ||
           contact.email.toLowerCase().includes(query)
         );
       }

@@ -23,7 +23,7 @@ const sirenNumber = ref('');
 const email = ref('');
 const formValid = ref(false);
 const isEditMode = ref(false);
-const isSubmitting = ref(false); // Pour empêcher les doubles clics
+const isSubmitting = ref(false);
 
 // Règles de validation
 const emailRules = [
@@ -51,33 +51,29 @@ const sirenRules = [
 // Watcher pour pré-remplir le formulaire en mode édition
 watch([() => props.contact, () => props.modelValue], ([newContact, isOpen]) => {
   if (isOpen && newContact) {
-    // Mode édition
     isEditMode.value = true;
     contactType.value = newContact.type;
     email.value = newContact.email;
     
     if (newContact.type === 'individual') {
-      firstName.value = newContact.firstName;
-      lastName.value = newContact.lastName;
+      firstName.value = newContact.firstName || '';
+      lastName.value = newContact.lastName || '';
       companyName.value = '';
       sirenNumber.value = '';
     } else {
-      companyName.value = newContact.companyName;
-      sirenNumber.value = newContact.sirenNumber;
+      companyName.value = newContact.companyName || '';
+      sirenNumber.value = newContact.sirenNumber || '';
       firstName.value = '';
       lastName.value = '';
     }
   } else if (isOpen && !newContact) {
-    // Mode création
     isEditMode.value = false;
     resetForm();
   }
 }, { immediate: true });
 
-// Watcher pour réinitialiser le formulaire quand on ouvre/ferme
 watch(() => props.modelValue, (isOpen) => {
   if (!isOpen) {
-    // Quand on ferme, toujours réinitialiser après un délai pour l'animation
     setTimeout(() => {
       resetForm();
     }, 200);
@@ -93,39 +89,33 @@ const resetForm = () => {
   email.value = '';
   formValid.value = false;
   isEditMode.value = false;
-  isSubmitting.value = false; // Réinitialiser l'état de soumission
+  isSubmitting.value = false;
 };
 
 const handleSave = async () => {
   if (!formValid.value || isSubmitting.value) return;
 
-  isSubmitting.value = true; // Bloquer les doubles clics
+  isSubmitting.value = true;
 
-  let contact: Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>;
+  let contact: Partial<Contact> = {
+    type: contactType.value,
+    email: email.value,
+  };
 
   if (contactType.value === 'individual') {
-    contact = {
-      type: 'individual',
-      firstName: firstName.value,
-      lastName: lastName.value,
-      email: email.value,
-    };
+    contact.firstName = firstName.value;
+    contact.lastName = lastName.value;
   } else {
-    contact = {
-      type: 'professional',
-      companyName: companyName.value,
-      sirenNumber: sirenNumber.value,
-      email: email.value,
-    };
+    contact.companyName = companyName.value;
+    contact.sirenNumber = sirenNumber.value;
   }
 
-  emit('save', contact);
-  // Le formulaire sera réinitialisé par le watcher quand modelValue passe à false
-  // isSubmitting sera réinitialisé par resetForm()
+  emit('save', contact as Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>);
+   // Le formulaire sera réinitialisé par le watcher quand modelValue passe à false
 };
 
 const handleClose = () => {
-  emit('update:modelValue', false);
+  emit('update:modelValue', false);  
   // Le formulaire sera réinitialisé par le watcher
 };
 </script>

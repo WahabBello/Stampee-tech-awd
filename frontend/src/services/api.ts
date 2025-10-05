@@ -67,27 +67,25 @@ export interface RegisterCredentials {
 }
 
 // Contact Types
-export interface IndividualContact {
+export interface Contact {
   id?: number;
-  type: 'individual';
-  firstName: string;
-  lastName: string;
+  type: 'individual' | 'professional';
+  
+  // Champs Individual (optionnels)
+  firstName?: string;
+  lastName?: string;
+  
+  // Champs Professional (optionnels)
+  companyName?: string;
+  sirenNumber?: string;
+  
+  // Champs communs
   email: string;
+  
+  // Timestamps
   createdAt?: string;
   updatedAt?: string;
 }
-
-export interface ProfessionalContact {
-  id?: number;
-  type: 'professional';
-  companyName: string;
-  sirenNumber: string;
-  email: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export type Contact = IndividualContact | ProfessionalContact;
 
 export interface ContactsResponse {
   contacts: Contact[];
