@@ -16,24 +16,7 @@ export async function createContact(
   try {
     const userId = (request as any).userId;
     const data = createContactSchema.parse(request.body);
-
-    const existingContact = await db
-      .select()
-      .from(contacts)
-      .where(
-        and(
-          eq(contacts.userId, userId),
-          eq(contacts.email, data.email)
-        )
-      )
-      .limit(1);
-
-    if (existingContact.length > 0) {
-      return reply.status(409).send({
-        error: 'Un contact avec cet email existe déjà',
-      });
-    }
-
+    
     // Préparer les données selon le type
     const contactData: any = {
       userId,
@@ -196,7 +179,7 @@ export async function updateContact(
       .where(
         and(
           eq(contacts.id, contactId),
-          eq(contacts.userId, userId)
+          eq(contacts.userId, userId),
         )
       )
       .limit(1);

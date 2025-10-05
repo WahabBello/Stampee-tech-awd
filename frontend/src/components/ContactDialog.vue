@@ -9,7 +9,7 @@ interface Props {
 
 interface Emits {
   (e: 'update:modelValue', value: boolean): void;
-  (e: 'save', contact: Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>): void;
+  (e: 'save', contact: Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>): Promise<void>;
 }
 
 const props = defineProps<Props>();
@@ -97,21 +97,31 @@ const handleSave = async () => {
 
   isSubmitting.value = true;
 
-  let contact: Partial<Contact> = {
-    type: contactType.value,
-    email: email.value,
-  };
+  try {
+    let contact: Partial<Contact> = {
+      type: contactType.value,
+      email: email.value,
+    };
 
-  if (contactType.value === 'individual') {
-    contact.firstName = firstName.value;
-    contact.lastName = lastName.value;
-  } else {
-    contact.companyName = companyName.value;
-    contact.sirenNumber = sirenNumber.value;
+    if (contactType.value === 'individual') {
+      contact.firstName = firstName.value;
+      contact.lastName = lastName.value;
+    } else {
+      contact.companyName = companyName.value;
+      contact.sirenNumber = sirenNumber.value;
+    }
+
+    await emit('save', contact as Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>);
+    
+    // Fermer le dialog après succès
+    emit('update:modelValue', false);
+  } catch (error) {
+    // L'erreur est gérée par le composant parent
+    console.error('Erreur lors de la sauvegarde:', error);
+  } finally {
+    // Toujours remettre isSubmitting à false
+    isSubmitting.value = false;
   }
-
-  emit('save', contact as Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>);
-   // Le formulaire sera réinitialisé par le watcher quand modelValue passe à false
 };
 
 const handleClose = () => {
