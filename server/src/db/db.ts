@@ -17,10 +17,10 @@ export const db = drizzle(pool, { schema });
 export async function testConnection() {
   try {
     await pool.query('SELECT NOW()');
-    console.log('✅ Database connection successful');
+    console.log('Database connection successful');
     return true;
   } catch (error) {
-    console.error('❌ Database connection failed:', error);
+    console.error('Database connection failed:', error);
     return false;
   }
 }

@@ -1,4 +1,4 @@
-# 📇 Stampee Contact Management System
+# Stampee Contact Management System
 
 Application full-stack de gestion de contacts avec authentification, permettant de gérer des contacts individuels et professionnels.
 
@@ -11,11 +11,12 @@ Application full-stack de gestion de contacts avec authentification, permettant 
 cd stampee-tech-awd
 
 # Lancer l'application
-docker compose up
+docker compose up --build
 
 # L'application sera accessible sur :
 # - Frontend : http://localhost:8080
 # - Backend API : http://localhost:3000
+# - Doc Swagger API : http://localhost:3000/documentation 
 # - PostgreSQL : localhost:5432
 ```
 
@@ -190,7 +191,7 @@ docker rm -f stampee-postgres
 ```
 ---
 
-## 🛠️ Stack technique
+## Stack technique
 
 ### Frontend
 - **Framework** : Vue 3 (Composition API)
@@ -270,143 +271,24 @@ stampee-tech-awd/
 
 ##  API Documentation
 
-### Base URL
-```
-http://localhost:3000/api
-```
+### Documentation interactive avec Swagger
 
-### Authentification
+L'API est entièrement documentée avec Swagger UI pour une exploration interactive.
 
-#### POST `/auth/register`
-Créer un nouveau compte utilisateur.
+**Accès :** http://localhost:3000/documentation
 
-**Body :**
-```json
-{
-  "email": "user@example.com",
-  "password": "SecurePass123"
-}
-```
+**Fonctionnalités :**
+- Tester tous les endpoints directement
+- Voir les exemples et schémas de données
+- S'authentifier avec JWT
+- Export OpenAPI/Postman compatible
 
-**Response :** `201 Created`
-```json
-{
-  "message": "Inscription réussie",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "id": 1,
-    "email": "user@example.com",
-    "createdAt": "2024-01-01T00:00:00.000Z"
-  }
-}
-```
-
-#### POST `/auth/login`
-Se connecter avec des identifiants existants.
-
-**Body :**
-```json
-{
-  "email": "user@example.com",
-  "password": "SecurePass123"
-}
-```
-
-**Response :** `200 OK`
-```json
-{
-  "message": "Connexion réussie",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": { ... }
-}
-```
-
-#### GET `/auth/me`
-Obtenir les informations de l'utilisateur connecté.
-
-**Headers :**
-```
-Authorization: Bearer <token>
-```
-
-**Response :** `200 OK`
-```json
-{
-  "user": {
-    "id": 1,
-    "email": "user@example.com",
-    "createdAt": "2024-01-01T00:00:00.000Z"
-  }
-}
-```
-
-### Contacts
-
-Toutes les routes contacts nécessitent l'authentification (header `Authorization: Bearer <token>`).
-
-#### GET `/contacts`
-Lister tous les contacts de l'utilisateur.
-
-**Query params :**
-- `search` (optionnel) : Filtrer par nom ou email
-
-**Response :** `200 OK`
-```json
-{
-  "contacts": [
-    {
-      "id": 1,
-      "type": "individual",
-      "firstName": "Jean",
-      "lastName": "Dupont",
-      "email": "jean.dupont@example.com",
-      "createdAt": "2024-01-01T00:00:00.000Z",
-      "updatedAt": "2024-01-01T00:00:00.000Z"
-    }
-  ],
-  "count": 1
-}
-```
-
-#### POST `/contacts`
-Créer un nouveau contact.
-
-**Body (Individual) :**
-```json
-{
-  "type": "individual",
-  "firstName": "Jean",
-  "lastName": "Dupont",
-  "email": "jean.dupont@example.com"
-}
-```
-
-**Body (Professional) :**
-```json
-{
-  "type": "professional",
-  "companyName": "Acme Corp",
-  "sirenNumber": "123456789",
-  "email": "contact@acme.com"
-}
-```
-
-**Response :** `201 Created`
-
-#### GET `/contacts/:id`
-Obtenir un contact spécifique.
-
-**Response :** `200 OK`
-
-#### PUT `/contacts/:id`
-Modifier un contact existant.
-
-**Response :** `200 OK`
-
-#### DELETE `/contacts/:id`
-Supprimer un contact.
-
-**Response :** `200 OK`
+**Comment utiliser :**
+1. Se connecter via `/api/auth/login`
+2. Copier le token JWT retourné
+3. Cliquer sur "Authorize" dans Swagger
+4. Coller le token
+5. Tester les endpoints protégés
 
 ---
 
@@ -453,4 +335,4 @@ Abdou Wahab DIALLO - Test technique Stampee
 
 ##  Remerciements
 
-Merci à toute l'équipe de Stampee pour l'opportunité de ce test technique
+Merci à toute l'équipe de Stampee pour l'opportunité de ce test technique !

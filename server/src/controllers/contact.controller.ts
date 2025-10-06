@@ -1,4 +1,3 @@
-// backend/src/controllers/contact.controller.ts
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { db } from '../db/db';
 import { contacts } from '../db/schema';
@@ -16,7 +15,7 @@ export async function createContact(
   try {
     const userId = (request as any).userId;
     const data = createContactSchema.parse(request.body);
-    
+
     // Préparer les données selon le type
     const contactData: any = {
       userId,
