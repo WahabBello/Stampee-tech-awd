@@ -10,7 +10,7 @@
 
 ```bash
 # À la racine du projet
-docker compose up
+docker compose up --build
 ```
 
 **C'est tout !** 

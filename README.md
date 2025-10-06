@@ -7,8 +7,7 @@ Application full-stack de gestion de contacts avec authentification, permettant 
 ### Avec Docker (Recommandé)
 
 ```bash
-# Cloner le repository
-cd stampee-tech-awd
+# À la racine du projet
 
 # Lancer l'application
 docker compose up --build
